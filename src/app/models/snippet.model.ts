@@ -6,8 +6,8 @@ export interface ISnippet extends Document {
   description?: string;
   code: string;
   language: string;
-  tag: string;
-  // author?: string;
+  tags: string[]; // 👈 kiểu mảng string
+  author: mongoose.Schema.Types.ObjectId; // 👈 thêm dòng này
 }
 
 const SnippetSchema = new Schema<ISnippet>(
@@ -16,8 +16,12 @@ const SnippetSchema = new Schema<ISnippet>(
     description: { type: String },
     code: { type: String, required: true },
     language: { type: String, required: true },
-    tag: { type: String, required: true },
-    // author: { type: String },
+    tags: { type: [String], required: true },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // 👈 liên kết với model User
+      required: true,
+    },
   },
   { timestamps: true }
 );

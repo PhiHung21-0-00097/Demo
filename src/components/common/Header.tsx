@@ -4,6 +4,7 @@ import { useAuthStore } from "@/stores/auth.store";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { Button } from "../ui/button";
+import { NavMenuMObile } from "../snippet/NavMenuMobile";
 
 export default function Header() {
   const { accessToken, user, logout } = useAuthStore();
@@ -14,44 +15,58 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white border-b shadow-sm">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+    <header className=" border-b shadow-sm text-white">
+      <div className="container mx-auto  flex justify-between items-center h-16">
         <Link href="/" className="text-xl font-bold">
-          SnippetHub
+          SnippetDemo
         </Link>
 
-        <nav className="flex items-center gap-4">
-          <Link href="/">Home</Link>
+        <nav className="lg:flex items-center gap-4 hidden">
+          <Button variant="outline" className="text-black">
+            <Link href="/">Home</Link>
+          </Button>
           {accessToken && (
             <>
-              <Link href="/snippets/create">Create Snippet</Link>
-              <Link href="/profile">Profile</Link>
+              <Button variant="outline" className="text-black">
+                <Link href="/snippets/create">Create Snippet</Link>
+              </Button>
+              <Button variant="outline" className="text-black">
+                <Link href="/profile">Profile</Link>
+              </Button>
             </>
           )}
         </nav>
-
-        <div className="flex gap-5">
-          {accessToken ? (
-            <>
-              <Button variant="outline" className=" px-3 py-1 cursor-pointer">
-                {user.name}
-              </Button>
+        <div className="flex gap-2">
+          <div className="gap-2 flex">
+            {accessToken ? (
+              <>
+                <Button
+                  variant="outline"
+                  className="px-3 py-1 cursor-pointertext-black text-black"
+                >
+                  {user.name}
+                </Button>
+                <Button
+                  onClick={() => logout()}
+                  className="hidden lg:flex bg-red-500 text-white px-3 py-1 cursor-pointer"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
               <Button
-                onClick={() => logout()}
-                className="bg-red-500 text-white px-3 py-1 cursor-pointer"
+                asChild
+                onClick={handleLogout}
+                className="bg-blue-500 text-white px-3 py-1 cursor-pointer"
               >
-                Logout
+                {/* <Link href="/auth/login">Login</Link> */}
               </Button>
-            </>
-          ) : (
-            <Button
-              asChild
-              onClick={handleLogout}
-              className="bg-blue-500 text-white px-3 py-1 cursor-pointer"
-            >
-              {/* <Link href="/auth/login">Login</Link> */}
-            </Button>
-          )}
+            )}
+          </div>
+
+          <div className="lg:hidden flex">
+            <NavMenuMObile />
+          </div>
         </div>
       </div>
     </header>

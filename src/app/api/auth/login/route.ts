@@ -27,23 +27,26 @@ export async function POST(req: Request) {
     }
 
     const accessToken = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id.toString(), email: user.email },
       process.env.JWT_SECRET!,
       { expiresIn: "1h" }
     );
 
     const refreshToken = jwt.sign(
-      { id: user._id },
+      { id: user._id.toString() },
       process.env.JWT_REFRESH_SECRET!,
       { expiresIn: "7d" }
     );
 
+    const userData = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    };
+
     return NextResponse.json({
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
+      success: true,
+      user: userData,
       accessToken,
       refreshToken,
     });

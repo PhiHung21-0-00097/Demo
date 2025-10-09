@@ -46,46 +46,48 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border rounded-xl shadow">
-      <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
-      {/* {error && <p className="text-red-500 mb-2">{error}</p>} */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className="border p-2 rounded"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-          className="border p-2 rounded"
-          required
-        />
+    <div className="h-screen">
+      <div className="max-w-md mx-auto mt-10 p-6 border rounded-xl shadow text-white">
+        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+        {/* {error && <p className="text-red-500 mb-2">{error}</p>} */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            className="border p-2 rounded text-white"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            className="border p-2 rounded text-white"
+            required
+          />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-blue-600 text-white py-2 rounded"
-        >
-          {loading ? <Spinner className="w-6 h-6 mx-auto" /> : "Login"}
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-600 text-white py-2 rounded"
+          >
+            {loading ? <Spinner className="w-6 h-6 mx-auto" /> : "Login"}
+          </button>
+        </form>
 
-      {/* 👇 Nút chuyển sang đăng ký */}
-      <p className="text-center text-sm mt-4 text-gray-600">
-        Don&apos;t have an account yet ?{" "}
-        <a
-          href="/auth/register"
-          className="text-blue-600 font-semibold hover:underline"
-        >
-          Register
-        </a>
-      </p>
+        {/* 👇 Nút chuyển sang đăng ký */}
+        <p className="text-center text-sm mt-4 text-gray-600">
+          Don&apos;t have an account yet ?{" "}
+          <a
+            href="/auth/register"
+            className="text-blue-600 font-semibold hover:underline"
+          >
+            Register
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

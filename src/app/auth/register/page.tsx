@@ -54,7 +54,7 @@ export default function RegisterPage() {
           placeholder="Name"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="border p-2 rounded"
+          className="border p-2 rounded text-white"
           required
         />
         <input
@@ -62,7 +62,7 @@ export default function RegisterPage() {
           placeholder="Email"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className="border p-2 rounded"
+          className="border p-2 rounded text-white"
           required
         />
         <input
@@ -70,7 +70,7 @@ export default function RegisterPage() {
           placeholder="Password"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
-          className="border p-2 rounded"
+          className="border p-2 rounded text-white"
           required
         />
         <button

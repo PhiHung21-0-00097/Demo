@@ -132,5 +132,74 @@
   }
 }
 body {
-  background-color: #abb8c3;
+  /* background-color: #abb8c3; */
+  background-color: black;
+}
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+/* Chrome, Safari, Edge */
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0; /* ẩn cả thanh ngang */
+}
+.wrap-code {
+  white-space: pre-wrap; /* tự xuống dòng */
+  word-break: break-word; /* nếu từ dài vẫn wrap */
+}
+
+/* From Uiverse.io by FColombati */
+.background {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-repeat: repeat;
+  background-position: 50% 50%;
+  background-size: 154px 265px;
+  background-image: conic-gradient(
+      from 0deg at 92.66% 50%,
+      #6a994e 0 120deg,
+      #fff0 0 100%
+    ),
+    conic-gradient(from -60deg at 81.66% 10.25%, #6a994e 0 180deg, #fff0 0 100%),
+    conic-gradient(from -60deg at 66.66% 22.25%, #a7c957 0 120deg, #fff0 0 100%),
+    conic-gradient(from 0deg at 71.66% 43%, #386641 0 120deg, #fff0 0 100%),
+    conic-gradient(from 0deg at 66.66% 45.95%, #386641 0 60deg, #fff0 0 100%),
+    conic-gradient(from 120deg at 25% 91.5%, #a7c957 0 120deg, #fff0 0 100%),
+    conic-gradient(from 180deg at 16% 73.5%, #6a994e 0 120deg, #fff0 0 100%),
+    conic-gradient(from 180deg at 16% 73.5%, #6a994e 0 120deg, #fff0 0 100%),
+    conic-gradient(from 180deg at 16% 73.5%, #6a994e 0 120deg, #fff0 0 100%),
+    conic-gradient(from 180deg at 16% 73.5%, #6a994e 0 120deg, #fff0 0 100%),
+    conic-gradient(
+      from 180deg at 39.5% 65.65%,
+      #386641 0 60deg,
+      #a7c957 0 120deg,
+      #fff0 0 100%
+    ),
+    conic-gradient(
+      from 180deg at 39.5% 65.65%,
+      #386641 0 60deg,
+      #a7c957 0 120deg,
+      #fff0 0 100%
+    ),
+    conic-gradient(
+      from 180deg at 39.5% 65.65%,
+      #386641 0 60deg,
+      #a7c957 0 120deg,
+      #fff0 0 100%
+    ),
+    conic-gradient(
+      from 180deg at 39.5% 65.65%,
+      #386641 0 60deg,
+      #a7c957 0 120deg,
+      #fff0 0 100%
+    ),
+    conic-gradient(
+      from 60deg at 50% 51.5%,
+      #a7c957 0 60deg,
+      #6a994e 0 120deg,
+      #4a8656 0 100%
+    );
 }

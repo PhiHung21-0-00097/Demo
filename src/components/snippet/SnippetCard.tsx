@@ -1,4 +1,7 @@
-import Link from "next/link";
+import Prism from "prismjs";
+import "prismjs/themes/prism-dark.css";
+import "prismjs/components/prism-javascript";
+import "prismjs/components/prism-python";
 
 export const SnippetCard = ({ snippet }: any) => {
   return (
@@ -15,7 +18,7 @@ export const SnippetCard = ({ snippet }: any) => {
     //     </div>
     //   </div>
     // </Link>
-    <div className="terminal p-5 rounded-lg font-mono min-w-[480px]">
+    <div className="p-2 rounded-lg  w-full ">
       <div className="terminal-header bg-zinc-700 text-white p-2 rounded-t-lg flex items-center">
         <span className="text-red-500 text-5xl leading-[0px] align-middle -mt-2">
           •
@@ -26,19 +29,33 @@ export const SnippetCard = ({ snippet }: any) => {
         <span className="text-green-500 text-5xl leading-[0px] align-middle -mt-2 ml-1">
           •
         </span>
-        <span className="ml-4 align-baseline">
-          authentication --- bash - zsh{" "}
+        <span className="ml-4 capitalize">
+          {snippet.language} --- bash - zsh{" "}
         </span>
       </div>
       <div
-        className="pl-4 pt-2 bg-gray-900 max-h-[500px] overflow-auto"
+        className="pl-4 pt-2 bg-gray-900 max-h-[300px] overflow-auto hide-scrollbar"
         id="output"
       >
-        <p className="text-gray-500">You need to authenticate to continue!</p>
+        {/* <p className="text-gray-500">You need to authenticate to continue!</p>
         <p className="text-sky-300">Enter 1 to login</p>
-        <p className="text-sky-300">Enter 2 to register</p>
+        <p className="text-sky-300">Enter 2 to register</p> */}
+        {/* <p>{snippet.code}</p> */}
+        <pre className="language-javascript wrap-code ">
+          <code
+            className={`language-${snippet.language.toLowerCase()}`}
+            dangerouslySetInnerHTML={{
+              __html: Prism.highlight(
+                snippet.code,
+                Prism.languages[snippet.language.toLowerCase()] ||
+                  Prism.languages.javascript,
+                snippet.language.toLowerCase()
+              ),
+            }}
+          />
+        </pre>
       </div>
-      <div
+      {/* <div
         className="input flex pl-4 bg-gray-900 pb-4 rounded-b-lg items-center"
         id="terminal-input-container"
       >
@@ -50,7 +67,7 @@ export const SnippetCard = ({ snippet }: any) => {
           id="terminal-input"
           type="text"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

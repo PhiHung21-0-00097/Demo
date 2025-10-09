@@ -4,6 +4,20 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import CodeEditor from "./CodeEditor";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { Input } from "../ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { Textarea } from "../ui/textarea";
+import { listFramework } from "./data";
 
 export default function SnippetForm() {
   const [form, setForm] = useState({
@@ -11,25 +25,36 @@ export default function SnippetForm() {
     description: "",
     code: "",
     language: "javascript",
-    tag: "",
+    tags: [] as string[],
   });
-  const router = useRouter();
 
+  const router = useRouter();
   const { createSnippet, loading } = useCreateSnippetStore();
 
+  // handle input change
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // Add tag
+  const addTag = (value: string) => {
+    const trimmed = value.trim();
+    if (trimmed && !form.tags.includes(trimmed)) {
+      setForm({ ...form, tags: [...form.tags, trimmed] });
+    }
+  };
+
+  // Remove tag
+  const removeTag = (index: number) => {
+    setForm({ ...form, tags: form.tags.filter((_, i) => i !== index) });
+  };
+  console.log("form", form);
+  // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const result: any = await createSnippet(form);
-    console.log("result", result);
     if (result.success) {
       toast.success("✅ Snippet created successfully!");
       router.push("/");
@@ -37,63 +62,104 @@ export default function SnippetForm() {
       toast.error(result.message || "Failed to create snippet");
     }
   };
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="text"
-        name="title"
-        placeholder="Title"
-        className="w-full border p-2 rounded"
-        value={form.title}
-        onChange={handleChange}
-        required
-      />
+    <div className="p-4 bg-zinc-700 rounded-md max-w-6xl mx-auto border-2 border-white">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Top fields */}
+        <div className="flex flex-col md:flex-row gap-4">
+          <Input
+            type="text"
+            name="title"
+            placeholder="Title"
+            className="flex-1  text-white"
+            value={form.title}
+            onChange={handleChange}
+            required
+          />
 
-      <textarea
-        name="description"
-        placeholder="Description"
-        className="w-full border p-2 rounded"
-        rows={3}
-        value={form.description}
-        onChange={handleChange}
-      />
+          <Textarea
+            name="description"
+            placeholder="Description (optional)"
+            value={form.description}
+            onChange={handleChange}
+            className="flex-1 min-h-[37px]  text-white"
+          />
 
-      <CodeEditor
-        value={form.code}
-        onChange={(code) => setForm((prev) => ({ ...prev, code }))}
-      />
+          <Select
+            value={form.language}
+            onValueChange={(val) => setForm({ ...form, language: val })}
+          >
+            <SelectTrigger className="max-w-[180px] text-white">
+              <SelectValue placeholder="Select Language" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Language</SelectLabel>
+                {listFramework.map((item, i) => (
+                  <SelectItem key={i} value={item.value}>
+                    {item.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="flex gap-2">
-        <select
-          name="language"
-          value={form.language}
-          onChange={handleChange}
-          className="border p-2 rounded"
-        >
-          <option value="javascript">JavaScript</option>
-          <option value="typescript">TypeScript</option>
-          <option value="python">Python</option>
-          <option value="cpp">C++</option>
-        </select>
+        {/* Tags input */}
+        <div className="flex flex-wrap gap-2 items-center">
+          {form.tags.map((tag, i) => (
+            <Badge
+              key={i}
+              variant="secondary"
+              className="flex items-center gap-1 py-0 pr-0"
+            >
+              {tag}
+              <Button
+                type="button"
+                size="icon"
+                variant="ghost"
+                className="cursor-pointer "
+                onClick={() => removeTag(i)}
+              >
+                ×
+              </Button>
+            </Badge>
+          ))}
+          <Input
+            placeholder="Add tag and press Enter"
+            className="flex-1 min-w-[100px] text-white "
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addTag(e.currentTarget.value);
+                e.currentTarget.value = "";
+              }
+            }}
+          />
+        </div>
 
-        <input
-          name="tag"
-          type="text"
-          placeholder="Tag (optional)"
-          className="border p-2 rounded flex-1"
-          value={form.tag}
-          onChange={handleChange}
-        />
-      </div>
+        {/* Code editor */}
+        <div className="p-4 bg-[#1e1e1e] rounded">
+          <CodeEditor
+            framework={form.language}
+            title={form.title}
+            desc={form.description}
+            value={form.code}
+            onChange={(code) => setForm({ ...form, code })}
+          />
+        </div>
 
-      <button
-        disabled={loading}
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        {loading ? "Creating..." : "Create Snippet"}
-      </button>
-    </form>
+        {/* Submit */}
+        <div className="flex justify-end">
+          <Button
+            disabled={loading}
+            type="submit"
+            className="bg-green-600 cursor-pointer hover:bg-green-700 text-white"
+          >
+            {loading ? "Creating..." : "Save Snippet"}
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 }

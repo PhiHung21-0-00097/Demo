@@ -6,7 +6,7 @@ interface CreateSnippetInput {
   code: string;
   description: string;
   language: string;
-  tag: string;
+  tags: string[];
 }
 
 interface CreateSnippetStore {
