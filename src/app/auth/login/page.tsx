@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
 import { toast } from "react-toastify";
 import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,10 +47,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-screen bg-[#abb8c3] pt-10">
-      <div className="max-w-md mx-auto  p-6 border rounded-xl shadow text-white">
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
-        {/* {error && <p className="text-red-500 mb-2">{error}</p>} */}
+    <div className="h-screen bg-[#abb8c3] pt-10 px-2 xs:px-0">
+      <div className="max-w-md mx-auto relative overflow-hidden z-10 bg-gray-800 p-8 rounded-lg shadow-md before:w-24 before:h-24 before:absolute before:bg-purple-600 before:rounded-full before:-z-10 before:blur-2xl after:w-32 after:h-32 after:absolute after:bg-sky-400 after:rounded-full after:-z-10 after:blur-xl after:top-24 after:-right-12">
+        <h2 className="text-2xl font-bold text-white mb-6">Login</h2>
+
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
             type="email"
@@ -68,25 +69,24 @@ export default function LoginPage() {
             required
           />
 
-          <button
+          {/* 👇 Nút chuyển sang đăng ký */}
+          <p className="text-center text-sm mt-4 text-white ">
+            Don&apos;t have an account yet ?{" "}
+            <a
+              href="/auth/register"
+              className="text-green-500 font-semibold hover:underline"
+            >
+              Register
+            </a>
+          </p>
+          <Button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white py-2 rounded"
+            className="bg-blue-600 text-white py-2 rounded cursor-pointer"
           >
             {loading ? <Spinner className="w-6 h-6 mx-auto" /> : "Login"}
-          </button>
+          </Button>
         </form>
-
-        {/* 👇 Nút chuyển sang đăng ký */}
-        <p className="text-center text-sm mt-4 text-gray-600">
-          Don&apos;t have an account yet ?{" "}
-          <a
-            href="/auth/register"
-            className="text-blue-600 font-semibold hover:underline"
-          >
-            Register
-          </a>
-        </p>
       </div>
     </div>
   );

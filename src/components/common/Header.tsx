@@ -55,7 +55,7 @@ export default function Header() {
               <>
                 <Button
                   variant="outline"
-                  className="rounded-full  h-9 w-9  cursor-pointertext-black text-black"
+                  className="rounded-xl  h-9 w-full  cursor-pointertext-black text-black"
                 >
                   {user.name}
                 </Button>
