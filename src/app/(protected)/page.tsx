@@ -1,25 +1,28 @@
 "use client";
+import { useTranslation } from "react-i18next";
 import { SnippetCard } from "@/components/snippet/SnippetCard";
 import { useEffect } from "react";
-import { useGetSnippetStore } from "@/stores/snippet/get-snippet.store";
+import { useGetAllSnippetStore } from "@/stores/snippet/get-all-snippet.store";
+import Providers from "./Providers";
 
 export default function HomePage() {
-  const { snippets, fetchSnippets } = useGetSnippetStore();
-  console.log("snippets", snippets);
-  // Lấy snippets
+  const { t } = useTranslation("common");
+  const { snippets, fetchAllSnippets } = useGetAllSnippetStore();
   useEffect(() => {
-    fetchSnippets();
-  }, [fetchSnippets]);
+    fetchAllSnippets();
+  }, [fetchAllSnippets]);
 
   return (
-    <div className="bg-[#abb8c3] h-screen">
+    <div className="bg-[#abb8c3] min-h-screen">
       <div className="container">
-        <h1 className=" text-2xl font-semibold mb-6 ">Code Snippets</h1>
-        <div className="grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {snippets.map((snip, i) => (
-            <SnippetCard key={i} snippet={snip} />
-          ))}
-        </div>
+        <h1 className=" text-2xl font-semibold mb-6 ">
+          {t("home.codeSnippets")}
+        </h1>
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {snippets.map((snip, i) => (
+          <SnippetCard key={i} snippet={snip} />
+        ))}
       </div>
     </div>
   );

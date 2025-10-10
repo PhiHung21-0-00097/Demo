@@ -2,46 +2,59 @@ import Prism from "prismjs";
 import "prismjs/themes/prism-dark.css";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-python";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export const SnippetCard = ({ snippet }: any) => {
+  const pathname = usePathname();
+  const isProfilePage = pathname.startsWith("/profile");
+
+  const CardWrapper = ({ children }: { children: React.ReactNode }) => {
+    const className =
+      "p-2 rounded-lg w-full border border-gray-700 hover:border-indigo-400 transition-colors duration-200 bg-gray-900";
+
+    if (isProfilePage) {
+      return (
+        <Link href={`/snippets/${snippet._id}`} className={className}>
+          {children}
+        </Link>
+      );
+    }
+
+    return <div className={className}>{children}</div>;
+  };
   return (
-    // <Link href={`/snippets/${snippet._id}`}>
-    //   <div className="p-4 border rounded-2xl hover:shadow-md transition">
-    //     <h2 className="font-bold text-lg mb-2">{snippet.title}</h2>
-    //     <p className="text-sm text-gray-600 mb-2">
-    //       Language: {snippet.language}
-    //     </p>
-    //     <div className="flex flex-wrap gap-1">
-    //       <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
-    //         #{snippet.tag}
-    //       </span>
-    //     </div>
-    //   </div>
-    // </Link>
-    <div className="p-2 rounded-lg  w-full ">
-      <div className="terminal-header bg-zinc-700 text-white p-2 rounded-t-lg flex items-center">
-        <span className="text-red-500 text-5xl leading-[0px] align-middle -mt-2">
-          •
-        </span>
-        <span className="text-yellow-500 text-5xl leading-[0px] align-middle -mt-2 ml-1">
-          •
-        </span>
-        <span className="text-green-500 text-5xl leading-[0px] align-middle -mt-2 ml-1">
-          •
-        </span>
-        <span className="ml-4 capitalize">
-          {snippet.language} --- bash - zsh{" "}
+    <CardWrapper>
+      {/* Header */}
+      <div className="terminal-header bg-zinc-700 text-white p-2 rounded-t-lg flex items-center justify-between">
+        <div className="flex items-center">
+          <span className="text-red-500 text-5xl leading-[0px] -mt-2">•</span>
+          <span className="text-yellow-500 text-5xl leading-[0px] -mt-2 ml-1">
+            •
+          </span>
+          <span className="text-green-500 text-5xl leading-[0px] -mt-2 ml-1">
+            •
+          </span>
+          <span className="ml-4 capitalize text-sm">{snippet.language}</span>
+        </div>
+        <span className="text-xs text-gray-400">
+          {new Date(snippet.createdAt).toLocaleDateString()}
         </span>
       </div>
+
+      {/* Description */}
+      {snippet.description && (
+        <p className="px-4 pt-2 text-gray-300 text-sm line-clamp-2">
+          {snippet.description}
+        </p>
+      )}
+
+      {/* Code */}
       <div
-        className="pl-4 pt-2 bg-gray-900 max-h-[300px] overflow-auto hide-scrollbar"
+        className="pl-4 pt-2 max-h-[200px] overflow-auto hide-scrollbar"
         id="output"
       >
-        {/* <p className="text-gray-500">You need to authenticate to continue!</p>
-        <p className="text-sky-300">Enter 1 to login</p>
-        <p className="text-sky-300">Enter 2 to register</p> */}
-        {/* <p>{snippet.code}</p> */}
-        <pre className="language-javascript wrap-code ">
+        <pre className="language-javascript wrap-code lg:min-h-[200px]">
           <code
             className={`language-${snippet.language.toLowerCase()}`}
             dangerouslySetInnerHTML={{
@@ -55,19 +68,20 @@ export const SnippetCard = ({ snippet }: any) => {
           />
         </pre>
       </div>
-      {/* <div
-        className="input flex pl-4 bg-gray-900 pb-4 rounded-b-lg items-center"
-        id="terminal-input-container"
-      >
-        <span className="text-green-500">➝</span>
-        <span className="text-sky-300 ml-2">~</span>
-        <span className="ml-2 text-md text-gray-500" id="placeholder"></span>
-        <input
-          className="bg-transparent border-none outline-none ring-0 focus:ring-0 text-amber-400 w-full"
-          id="terminal-input"
-          type="text"
-        />
-      </div> */}
-    </div>
+
+      {/* Tags */}
+      {snippet.tags?.length > 0 && (
+        <div className="px-4 pt-2 pb-2 flex flex-wrap gap-2">
+          {snippet.tags.map((tag, i) => (
+            <span
+              key={i}
+              className="bg-indigo-600 text-white text-xs px-2 py-1 rounded-full"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </CardWrapper>
   );
 };

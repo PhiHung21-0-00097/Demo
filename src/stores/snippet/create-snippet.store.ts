@@ -16,6 +16,10 @@ interface CreateSnippetStore {
   createSnippet: (
     form: CreateSnippetInput
   ) => Promise<{ success: boolean; message?: string }>;
+  updateSnippet: (
+    id: string,
+    form: CreateSnippetInput
+  ) => Promise<{ success: boolean; message?: string }>;
 }
 
 export const useCreateSnippetStore = create<CreateSnippetStore>((set) => ({
@@ -34,6 +38,23 @@ export const useCreateSnippetStore = create<CreateSnippetStore>((set) => ({
       const msg =
         err?.response?.data?.message || err.message || "Create failed";
       console.error("❌ Create snippet error:", msg);
+
+      set({ error: msg, loading: false, success: false });
+      return { success: false, message: msg };
+    }
+  },
+
+  updateSnippet: async (id, form) => {
+    try {
+      set({ loading: true, error: null, success: false });
+      const res = await api.put(`/snippets/${id}`, form);
+
+      set({ loading: false, success: true });
+      return { success: true, message: "Updated successfully", data: res };
+    } catch (err: any) {
+      const msg =
+        err?.response?.data?.message || err.message || "Update failed";
+      console.error("❌ Update snippet error:", msg);
 
       set({ error: msg, loading: false, success: false });
       return { success: false, message: msg };

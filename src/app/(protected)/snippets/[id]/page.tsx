@@ -1,35 +1,40 @@
-import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import SnippetFormEdit from "../edit/page";
 
-export default async function SnippetDetail({
+export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
-}) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/snippets/${params.id}`,
-    {
-      cache: "no-store",
-    }
-  );
-  const data = await res.json();
+  params: { id: string } | Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const data = await fetch(
+    `${process.env.NEXTAUTH_URL}/api/snippets/${resolvedParams.id}`
+  ).then((r) => r.json());
+  const snippet = data?.data;
+  return {
+    title: `${snippet.title} | Code Snippets`,
+    description: snippet.description || "A shared code snippet by developers.",
+    openGraph: {
+      title: snippet.title,
+      description: snippet.description,
+      url: `https://demosnipet.vercel.app//snippet/${resolvedParams.id}`,
+      type: "article",
+    },
+    twitter: {
+      title: snippet.title,
+      description: snippet.description,
+    },
+  };
+}
 
-  if (!data?.title) return notFound();
-
+export default function SnippetDetailPage() {
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">{data.title}</h1>
-      <pre className="bg-gray-900 text-white p-4 rounded-xl overflow-x-auto">
-        <code>{data.code}</code>
-      </pre>
-      <p className="mt-3 text-gray-600">
-        Language: <b>{data.language}</b>
-      </p>
-      <div className="mt-2 flex flex-wrap gap-1">
-        {data.tags.map((t: string) => (
-          <span key={t} className="bg-gray-200 text-xs px-2 py-1 rounded">
-            #{t}
-          </span>
-        ))}
+    <div className="container">
+      <div className="h-screen">
+        <h1 className="text-center text-2xl font-bold mt-6 mb-4 text-white">
+          Please share the source code you like !!!
+        </h1>
+        <SnippetFormEdit />
       </div>
     </div>
   );

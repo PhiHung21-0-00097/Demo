@@ -1,17 +1,15 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
 import Link from "next/link";
-import { toast } from "react-toastify";
 import { Button } from "../ui/button";
 import { NavMenuMObile } from "../snippet/NavMenuMobile";
+import i18next, { LocaleEnum } from "@/i18n";
 
 export default function Header() {
   const { accessToken, user, logout } = useAuthStore();
-  const router = useRouter();
   const handleLogout = () => {
     logout();
-    router.replace("/auth/login");
   };
 
   return (
@@ -25,6 +23,7 @@ export default function Header() {
           <Button variant="outline" className="text-black">
             <Link href="/">Home</Link>
           </Button>
+
           {accessToken && (
             <>
               <Button variant="outline" className="text-black">
@@ -37,12 +36,26 @@ export default function Header() {
           )}
         </nav>
         <div className="flex gap-2">
+          <div className="flex gap-2">
+            <Button
+              className="cursor-pointer bg-blue-500"
+              onClick={() => i18next.changeLanguage(LocaleEnum.EN)}
+            >
+              EN
+            </Button>
+            <Button
+              className="cursor-pointer bg-blue-500"
+              onClick={() => i18next.changeLanguage(LocaleEnum.VI)}
+            >
+              VI
+            </Button>
+          </div>
           <div className="gap-2 flex">
             {accessToken ? (
               <>
                 <Button
                   variant="outline"
-                  className="px-3 py-1 cursor-pointertext-black text-black"
+                  className="rounded-full  h-9 w-9  cursor-pointertext-black text-black"
                 >
                   {user.name}
                 </Button>
@@ -59,7 +72,7 @@ export default function Header() {
                 onClick={handleLogout}
                 className="bg-blue-500 text-white px-3 py-1 cursor-pointer"
               >
-                {/* <Link href="/auth/login">Login</Link> */}
+                <Link href="/auth/login">Login</Link>
               </Button>
             )}
           </div>

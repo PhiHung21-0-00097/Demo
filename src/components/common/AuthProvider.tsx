@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
 import { toast } from "react-toastify";
 
@@ -10,34 +10,34 @@ export default function AuthProvider({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const { accessToken, initAuth, isLoggedOut, clearLogoutFlag } =
     useAuthStore();
+
   const [isChecking, setIsChecking] = useState(true);
-  const [hasNotified, setHasNotified] = useState(false);
 
   useEffect(() => {
     initAuth();
-    setTimeout(() => setIsChecking(false), 300);
+    setTimeout(() => setIsChecking(false), 100);
   }, [initAuth]);
 
-  // Check logout thủ công
+  // 🔹 Logout thủ công: chạy ngay khi isLoggedOut = true
   useEffect(() => {
     if (!isChecking && isLoggedOut) {
       toast.success("Đăng xuất thành công!");
-      clearLogoutFlag();
-      setHasNotified(true); // để tránh toast hết hạn token ngay sau đó
-      router.replace("/auth/login");
+      clearLogoutFlag(); // reset flag
+      if (pathname !== "/auth/login") router.replace("/auth/login");
     }
-  }, [isChecking, isLoggedOut, clearLogoutFlag, router]);
+  }, [isChecking, isLoggedOut, clearLogoutFlag, router, pathname]);
 
-  // Check accessToken hết hạn (chỉ khi không phải logout)
+  // 🔹 Token hết hạn: chỉ chạy khi accessToken = null và không phải logout thủ công
   useEffect(() => {
-    if (!isChecking && !accessToken && !hasNotified && !isLoggedOut) {
+    console.log("isLoggedOut", isLoggedOut);
+    if (!isChecking && !accessToken && !isLoggedOut) {
       toast.error("Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!");
-      setHasNotified(true);
-      router.replace("/auth/login");
+      if (pathname !== "/auth/login") router.replace("/auth/login");
     }
-  }, [isChecking, accessToken, hasNotified, isLoggedOut, router]);
+  }, [isChecking, accessToken, isLoggedOut, router, pathname]);
 
   if (isChecking)
     return <p className="text-center mt-10">Đang kiểm tra đăng nhập...</p>;

@@ -1,7 +1,7 @@
 "use client";
 import { useCreateSnippetStore } from "@/stores/snippet/create-snippet.store";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import CodeEditor from "./CodeEditor";
 import { Button } from "../ui/button";
@@ -18,8 +18,12 @@ import {
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
 import { listFramework } from "./data";
+import { analyzeComplexity } from "@/utils";
 
-export default function SnippetForm() {
+type Props = {
+  snippet?: any;
+};
+export default function SnippetForm({ snippet }: Props) {
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -27,6 +31,8 @@ export default function SnippetForm() {
     language: "javascript",
     tags: [] as string[],
   });
+
+  const [timeComplexity, setTimeComplexity] = useState<string | null>(null);
 
   const router = useRouter();
   const { createSnippet, loading } = useCreateSnippetStore();
@@ -50,7 +56,6 @@ export default function SnippetForm() {
   const removeTag = (index: number) => {
     setForm({ ...form, tags: form.tags.filter((_, i) => i !== index) });
   };
-  console.log("form", form);
   // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,6 +67,11 @@ export default function SnippetForm() {
       toast.error(result.message || "Failed to create snippet");
     }
   };
+
+  useEffect(() => {
+    setTimeComplexity(analyzeComplexity(form.code));
+  }, [form.code]);
+
   return (
     <div className="p-4 bg-zinc-700 rounded-md max-w-6xl mx-auto border-2 border-white">
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -148,6 +158,13 @@ export default function SnippetForm() {
             onChange={(code) => setForm({ ...form, code })}
           />
         </div>
+
+        {/* Hiển thị ước lượng complexity */}
+        {timeComplexity && (
+          <p className="text-yellow-400 font-mono">
+            ⏱ Estimated Time Complexity: {timeComplexity}
+          </p>
+        )}
 
         {/* Submit */}
         <div className="flex justify-end">

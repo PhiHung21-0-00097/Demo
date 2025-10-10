@@ -1,46 +1,30 @@
-import { NextResponse } from "next/server";
-import { connectDB } from "@/lib/db";
+// 🟢 Lấy tất cả snippets theo người dùng
 import Snippet from "@/app/models/snippet.model";
+import { connectDB } from "@/lib/db";
+import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET!; // bạn nhớ tạo trong .env
-
-// 🟢 Lấy tất cả snippets
 export async function GET(req: Request) {
   try {
+    // Kết nối database
     await connectDB();
 
-    const authHeader = req.headers.get("authorization");
-    if (!authHeader?.startsWith("Bearer ")) {
-      return NextResponse.json(
-        { success: false, message: "Unauthorized" },
-        { status: 401 }
-      );
-    }
+    // Lấy tất cả snippets, sắp xếp mới nhất trước
+    const snippets = await Snippet.find().sort({ createdAt: -1 });
 
-    const token = authHeader.split(" ")[1];
-
-    const decoded: any = jwt.verify(token, JWT_SECRET);
-
-    if (!decoded?.id) {
-      return NextResponse.json(
-        { success: false, message: "Invalid token" },
-        { status: 401 }
-      );
-    }
-    const snippets = await Snippet.find({ author: decoded.id }).sort({
-      createdAt: -1,
+    return NextResponse.json({
+      success: true,
+      data: snippets,
     });
-    return NextResponse.json({ success: true, data: snippets });
   } catch (error) {
-    console.error("❌ GET Snippets error:", error);
+    console.error("❌ GET All Snippets error:", error);
     return NextResponse.json(
-      { success: false, message: "Failed to fetch snippets" },
+      { success: false, message: "Failed to fetch all snippets" },
       { status: 500 }
     );
   }
 }
-
 // 🟢 Tạo snippet mới
 export async function POST(req: Request) {
   try {
@@ -65,7 +49,6 @@ export async function POST(req: Request) {
         { status: 401 }
       );
     }
-    console.log("decoded", decoded);
     const body = await req.json();
 
     // 🧱 Gắn author từ token
@@ -73,7 +56,6 @@ export async function POST(req: Request) {
       ...body,
       author: decoded.id, // 👈 userId từ token
     });
-    console.log("newSnippet", newSnippet);
     return NextResponse.json({ success: true, data: newSnippet });
   } catch (error: any) {
     console.error("❌ POST Snippet error:", error);
