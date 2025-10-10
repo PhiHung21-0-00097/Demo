@@ -95,10 +95,8 @@ export default function SnippetFormEdit() {
   if (error) return <p>Error: {error}</p>;
   if (!snippet) return <p>Snippet not found</p>;
 
-  console.log("snippet", snippet);
-
   return (
-    <div className="container">
+    <div className="p-4 bg-zinc-700 rounded-md max-w-6xl mx-auto border-2 border-white">
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Top fields */}
         <div className="flex flex-col md:flex-row gap-4">

@@ -27,16 +27,12 @@ export default function CodeEditor({
   const lines = value.split("\n").length;
   return (
     <div className="">
-      <div className="terminal-header bg-zinc-700 text-white p-2 rounded-t-lg flex items-center">
-        <span className="text-red-500 text-5xl leading-[0px] align-middle -mt-2">
-          •
-        </span>
-        <span className="text-yellow-500 text-5xl leading-[0px] align-middle -mt-2 ml-1">
-          •
-        </span>
-        <span className="text-green-500 text-5xl leading-[0px] align-middle -mt-2 ml-1">
-          •
-        </span>
+      <div className="terminal-header bg-zinc-700 text-white p-2 rounded-t-lg xs:flex items-center">
+        <div>
+          <span className="text-red-500 text-5xl   -mt-2">•</span>
+          <span className="text-yellow-500 text-5xl   -mt-2 ml-1">•</span>
+          <span className="text-green-500 text-5xl   -mt-2 ml-1">•</span>
+        </div>
         <span className="capitalize ml-4 align-baseline">
           {framework} --- bash - zsh {title && `-- ${title}`}{" "}
           {desc && `-- ${desc}`}

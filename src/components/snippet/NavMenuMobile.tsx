@@ -33,7 +33,7 @@ export function NavMenuMObile() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="outline" className="text-black">
+        <Button variant="outline" className="text-black px-2 xs:px-4">
           <HiMenu />
         </Button>
       </SheetTrigger>

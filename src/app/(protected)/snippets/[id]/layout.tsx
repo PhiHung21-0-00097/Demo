@@ -9,11 +9,11 @@ export const metadata: Metadata = {
   description:
     "A platform for developers to share, tag, and discover code snippets.",
   keywords: ["code snippets", "programming", "Next.js", "developers"],
-  metadataBase: new URL("https://yourdomain.com"),
+  metadataBase: new URL("https://demosnipet.vercel.app/"),
   openGraph: {
     title: "CodeShare",
     description: "Share and explore developer code snippets.",
-    url: "https://yourdomain.com",
+    url: "https://demosnipet.vercel.app/",
     siteName: "CodeShare",
     type: "website",
   },
@@ -28,5 +28,5 @@ export default function SnippetLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <section className="max-w-5xl mx-auto px-4 py-6">{children}</section>;
+  return <section className="">{children}</section>;
 }

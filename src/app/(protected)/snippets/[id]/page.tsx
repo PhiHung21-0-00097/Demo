@@ -29,12 +29,14 @@ export async function generateMetadata({
 
 export default function SnippetDetailPage() {
   return (
-    <div className="container">
-      <div className="h-screen">
-        <h1 className="text-center text-2xl font-bold mt-6 mb-4 text-white">
-          Please share the source code you like !!!
-        </h1>
-        <SnippetFormEdit />
+    <div className="bg-[#abb8c3] min-h-screen">
+      <div className="container">
+        <div className="h-screen">
+          <h1 className="text-center text-2xl font-bold yt-6 mb-4 text-white">
+            Please share the source code you like !!!
+          </h1>
+          <SnippetFormEdit />
+        </div>
       </div>
     </div>
   );

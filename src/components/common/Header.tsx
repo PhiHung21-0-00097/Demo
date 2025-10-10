@@ -14,7 +14,7 @@ export default function Header() {
 
   return (
     <header className=" border-b shadow-sm text-white">
-      <div className="container mx-auto  flex justify-between items-center h-16">
+      <div className="container mx-auto gap-2 flex justify-between items-center h-16">
         <Link href="/" className="text-xl font-bold">
           SnippetDemo
         </Link>
@@ -38,13 +38,13 @@ export default function Header() {
         <div className="flex gap-2">
           <div className="flex gap-2">
             <Button
-              className="cursor-pointer bg-blue-500"
+              className="cursor-pointer bg-blue-500 px-2 xs:px-4 text-xs xs:text-sm"
               onClick={() => i18next.changeLanguage(LocaleEnum.EN)}
             >
               EN
             </Button>
             <Button
-              className="cursor-pointer bg-blue-500"
+              className="cursor-pointer bg-blue-500 px-2 xs:px-4 text-xs xs:text-sm"
               onClick={() => i18next.changeLanguage(LocaleEnum.VI)}
             >
               VI

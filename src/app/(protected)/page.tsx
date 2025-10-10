@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { SnippetCard } from "@/components/snippet/SnippetCard";
 import { useEffect } from "react";
 import { useGetAllSnippetStore } from "@/stores/snippet/get-all-snippet.store";
-import Providers from "./Providers";
 
 export default function HomePage() {
   const { t } = useTranslation("common");
@@ -13,7 +12,7 @@ export default function HomePage() {
   }, [fetchAllSnippets]);
 
   return (
-    <div className="bg-[#abb8c3] min-h-screen">
+    <div className="bg-[#abb8c3] min-h-screen px-2 lg:px-0">
       <div className="container">
         <h1 className=" text-2xl font-semibold mb-6 ">
           {t("home.codeSnippets")}
