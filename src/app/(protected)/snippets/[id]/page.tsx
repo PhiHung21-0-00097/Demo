@@ -7,9 +7,10 @@ export async function generateMetadata({
   params: { id: string } | Promise<{ id: string }>;
 }): Promise<Metadata> {
   const resolvedParams = await params;
-  const data = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/snippets/${resolvedParams.id}`
-  ).then((r) => r.json());
+  const baseUrl = process.env.NEXTAUTH_URL || "https://demosnipet.vercel.app";
+  const data = await fetch(`${baseUrl}/api/snippets/${resolvedParams.id}`, {
+    cache: "no-store",
+  }).then((r) => r.json());
   const snippet = data?.data;
   return {
     title: `${snippet.title} | Code Snippets`,
