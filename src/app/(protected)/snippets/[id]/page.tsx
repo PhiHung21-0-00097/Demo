@@ -30,9 +30,9 @@ export async function generateMetadata({
 
 export default function SnippetDetailPage() {
   return (
-    <div className="bg-[#abb8c3] min-h-screen">
+    <div className="bg-[#abb8c3] ">
       <div className="container">
-        <div className="h-screen">
+        <div className="h-full">
           <h1 className="text-center text-2xl font-bold yt-6 mb-4 text-white">
             Please share the source code you like !!!
           </h1>
